@@ -632,6 +632,7 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
   GstWlBuffer *wlbuffer;
   GstVideoMeta *vmeta;
   GstVideoFormat format;
+  GstVideoInfo old_vinfo;
   GstMemory *mem;
   struct wl_buffer *wbuf = NULL;
 
@@ -677,6 +678,7 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
   /* update video info from video meta */
   mem = gst_buffer_peek_memory (buffer, 0);
 
+  old_vinfo = sink->video_info;
   vmeta = gst_buffer_get_video_meta (buffer);
   if (vmeta) {
     gint i;
@@ -713,6 +715,9 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
     if (!wbuf) {
       GstVideoFrame src, dst;
       GstVideoInfo src_info = sink->video_info;
+
+      /* rollback video info changes */
+      sink->video_info = old_vinfo;
 
       /* we don't know how to create a wl_buffer directly from the provided
        * memory, so we have to copy the data to shm memory that we know how
