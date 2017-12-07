@@ -584,7 +584,7 @@ gst_wayland_sink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
   }
 
   alloc = gst_wl_shm_allocator_get ();
-  gst_query_add_allocation_param (query, gst_wl_shm_allocator_get (), NULL);
+  gst_query_add_allocation_param (query, alloc, NULL);
   gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL);
   g_object_unref (alloc);
 
