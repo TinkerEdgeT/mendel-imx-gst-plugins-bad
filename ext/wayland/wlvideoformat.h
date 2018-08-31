@@ -26,7 +26,7 @@
 
 #include <wayland-client-protocol.h>
 #include <gst/video/video.h>
-#include <drm_fourcc.h>
+#include <drm_fourcc_imx.h>
 
 G_BEGIN_DECLS
 

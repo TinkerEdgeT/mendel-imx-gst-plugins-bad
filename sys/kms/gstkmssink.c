@@ -50,7 +50,7 @@
 
 #include <stdint.h>
 
-#include <drm_fourcc.h>
+#include <drm_fourcc_imx.h>
 
 #include <string.h>
 #include <fcntl.h>

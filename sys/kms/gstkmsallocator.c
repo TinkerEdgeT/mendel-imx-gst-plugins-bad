@@ -33,7 +33,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <drm_fourcc.h>
+#include <drm_fourcc_imx.h>
 
 /* it needs to be below because is internal to libdrm */
 #include <drm.h>

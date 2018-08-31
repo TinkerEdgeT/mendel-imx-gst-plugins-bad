@@ -29,6 +29,7 @@
 #include <drm.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
+#include <drm_mode_imx.h>
 
 #include <gst/video/gstvideosink.h>
 
