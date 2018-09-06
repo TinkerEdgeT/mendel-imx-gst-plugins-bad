@@ -278,7 +278,13 @@ gtk_gst_gl_widget_render (GtkGLArea * widget, GdkGLContext * context)
       base_widget->buffer, context);
 
   _redraw_texture (GTK_GST_GL_WIDGET (widget), priv->current_tex);
-  gst_gl_overlay_compositor_draw_overlays (priv->overlay_compositor);
+  static const gfloat identity_matrix[] = {
+    1.0f, 0.0f, 0.0, 0.0f,
+    0.0f, 1.0f, 0.0, 0.0f,
+    0.0f, 0.0f, 1.0, 0.0f,
+    0.0f, 0.0f, 0.0, 1.0f,
+  };
+  gst_gl_overlay_compositor_draw_overlays (priv->overlay_compositor, identity_matrix);
 
   gst_gl_insert_debug_marker (priv->other_context, "texture %u redrawn",
       priv->current_tex);
