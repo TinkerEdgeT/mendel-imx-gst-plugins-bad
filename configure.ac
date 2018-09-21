@@ -876,14 +876,12 @@ if test "x$HAVE_DRM_FOURCC_HEADER" = "xyes" -a \
 fi
 
 dnl check for Vivante DirectVIV support
-dnl AC_CHECK_LIB(GLESv2, glTexDirectVIV, [HAVE_VIV_DIRECTVIV=yes], [HAVE_VIV_DIRECTVIV=no])
+AC_CHECK_LIB(GLESv2, glTexDirectVIV, [HAVE_VIV_DIRECTVIV=yes], [HAVE_VIV_DIRECTVIV=no])
 
-dnl GST_GL_HAVE_VIV_DIRECTVIV=0
-dnl if test "x$HAVE_VIV_DIRECTVIV" = "xyes"; then
-dnl          GST_GL_HAVE_VIV_DIRECTVIV=1
-dnl fi
-HAVE_VIV_DIRECTVIV=yes
-GST_GL_HAVE_VIV_DIRECTVIV=1
+GST_GL_HAVE_VIV_DIRECTVIV=0
+if test "x$HAVE_VIV_DIRECTVIV" = "xyes"; then
+          GST_GL_HAVE_VIV_DIRECTVIV=1
+fi
 
 dnl check imx6 g2d support
 HAVE_G2D=no
