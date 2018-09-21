@@ -522,7 +522,6 @@ _dma_buf_upload_transform_caps (gpointer impl, GstGLContext * context,
         _set_caps_features_with_passthrough (caps,
         GST_CAPS_FEATURE_MEMORY_GL_MEMORY, passthrough);
 
-    gst_caps_set_simple (ret, "format", G_TYPE_STRING, "RGBA", NULL);
     tmp = _caps_intersect_texture_target (ret, 1 << GST_GL_TEXTURE_TARGET_2D);
     gst_caps_unref (ret);
     ret = tmp;
@@ -775,7 +774,7 @@ _dma_buf_upload_accept (gpointer impl, GstBuffer * buffer, GstCaps * in_caps,
   }
 
   out_fmt = GST_VIDEO_INFO_FORMAT (&dmabuf->upload->priv->out_info);
-  if (out_fmt == GST_VIDEO_FORMAT_RGBA) {
+  if (FALSE) {
     /* Now create one single EGLImage */
     /* check if one is cached */
     dmabuf->eglimage[0] = _get_cached_eglimage (mems[0], 0);
