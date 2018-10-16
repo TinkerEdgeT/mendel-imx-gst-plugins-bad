@@ -228,6 +228,7 @@ gst_gl_upload_element_prepare_output_buffer (GstBaseTransform * bt,
   GstGLUploadElement *upload = GST_GL_UPLOAD_ELEMENT (bt);
   GstGLUploadReturn ret;
   GstBaseTransformClass *bclass;
+  GstVideoCropMeta *crop = NULL;
 
   bclass = GST_BASE_TRANSFORM_GET_CLASS (bt);
 
@@ -238,6 +239,24 @@ gst_gl_upload_element_prepare_output_buffer (GstBaseTransform * bt,
 
   if (!upload->upload)
     return GST_FLOW_NOT_NEGOTIATED;
+
+  crop = gst_buffer_get_video_crop_meta(buffer);
+  
+  if (crop) {
+    GstCaps * out_caps = gst_caps_copy (upload->out_caps);
+    gst_caps_set_simple (out_caps, "width", G_TYPE_INT, crop->width,
+                            "height", G_TYPE_INT, crop->height, NULL);
+  
+    if (!gst_caps_is_equal (out_caps, upload->out_caps)){
+      GST_DEBUG ("new out caps %" GST_PTR_FORMAT " old out caps %" GST_PTR_FORMAT,
+                out_caps, upload->out_caps);
+      if (gst_pad_push_event (GST_BASE_TRANSFORM_SRC_PAD (bt),
+              gst_event_new_caps (out_caps))) {
+        gst_caps_replace (&upload->out_caps, out_caps);
+        gst_gl_upload_set_caps (upload->upload, upload->in_caps, out_caps);
+      }
+    }
+  }
 
   ret = gst_gl_upload_perform_with_buffer (upload->upload, buffer, outbuf);
   if (ret == GST_GL_UPLOAD_RECONFIGURE) {
