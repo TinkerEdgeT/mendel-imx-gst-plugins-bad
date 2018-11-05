@@ -671,10 +671,13 @@ static void
 gst_gl_context_egl_swap_buffers (GstGLContext * context)
 {
   GstGLContextEGL *egl;
+  const GstGLFuncs *gl;
 
   egl = GST_GL_CONTEXT_EGL (context);
+  gl = context->gl_vtable;
 
   eglSwapBuffers (egl->egl_display, egl->egl_surface);
+  gl->Finish();
 }
 
 static GstGLAPI
