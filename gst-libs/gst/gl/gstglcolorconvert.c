@@ -135,6 +135,18 @@ static const gfloat from_rgb_bt709_vcoeff[] = {0.440654f, -0.400285f, -0.040370f
     "uniform float poffset_x;\n" \
     "uniform float poffset_y;\n"
 
+#define DEFAULT_UNIFORMS_HIGH    \
+    "#ifdef GL_ES\n"             \
+    "precision highp float;\n"   \
+    "#endif\n"                   \
+    "uniform vec2 tex_scale0;\n" \
+    "uniform vec2 tex_scale1;\n" \
+    "uniform vec2 tex_scale2;\n" \
+    "uniform float width;\n"     \
+    "uniform float height;\n"    \
+    "uniform float poffset_x;\n" \
+    "uniform float poffset_y;\n"
+
 #define MAX_FUNCTIONS 4
 
 #define glsl_OES_extension_string "#extension GL_OES_EGL_image_external : require \n"
@@ -320,7 +332,7 @@ static const struct shader_templ templ_RGB_to_NV12_NV21 =
    UYVY:a,b,r */
 static const struct shader_templ templ_YUY2_UYVY_to_RGB =
   { NULL,
-    DEFAULT_UNIFORMS YUV_TO_RGB_COEFFICIENTS "uniform sampler2D Ytex;\n",
+    DEFAULT_UNIFORMS_HIGH YUV_TO_RGB_COEFFICIENTS "uniform sampler2D Ytex;\n",
     { glsl_func_yuv_to_rgb, NULL, },
     "vec4 rgba, uv_texel;\n"
     "vec3 yuv;\n"
@@ -345,7 +357,7 @@ static const struct shader_templ templ_YUY2_UYVY_to_RGB =
 
 static const struct shader_templ templ_RGB_to_YUY2_UYVY =
   { NULL,
-    DEFAULT_UNIFORMS RGB_TO_YUV_COEFFICIENTS "uniform sampler2D tex;\n",
+    DEFAULT_UNIFORMS_HIGH RGB_TO_YUV_COEFFICIENTS "uniform sampler2D tex;\n",
     { glsl_func_rgb_to_yuv, NULL, },
     "vec4 texel1, texel2;\n"
     "vec3 yuv, yuv1, yuv2;\n"
