@@ -1267,7 +1267,7 @@ gst_glimage_sink_change_state (GstElement * element, GstStateChange transition)
       glimage_sink->prev_cropmeta = NULL;
 
       if (glimage_sink->run_time > 0) {
-        g_print ("Total showed frames (%lld), playing for (%"GST_TIME_FORMAT"), fps (%.3f).\n",
+        GST_DEBUG ("Total showed frames (%lld), playing for (%"GST_TIME_FORMAT"), fps (%.3f).\n",
                 glimage_sink->frame_showed, GST_TIME_ARGS (glimage_sink->run_time),
                 (gfloat)GST_SECOND * glimage_sink->frame_showed / glimage_sink->run_time);
       }
