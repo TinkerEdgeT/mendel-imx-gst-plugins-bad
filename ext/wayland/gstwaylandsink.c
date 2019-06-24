@@ -476,7 +476,7 @@ gst_wayland_sink_change_state (GstElement * element, GstStateChange transition)
       g_clear_object (&sink->pool);
       
       if (sink->run_time > 0) {
-        g_print ("Total showed frames (%lld), playing for (%"GST_TIME_FORMAT"), fps (%.3f).\n",
+        GST_DEBUG ("Total showed frames (%lld), playing for (%"GST_TIME_FORMAT"), fps (%.3f).\n",
                 sink->frame_showed, GST_TIME_ARGS (sink->run_time),
                 (gfloat)GST_SECOND * sink->frame_showed / sink->run_time);
       }
