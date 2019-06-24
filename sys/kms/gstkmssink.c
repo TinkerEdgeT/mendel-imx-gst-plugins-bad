@@ -52,7 +52,7 @@
 
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <drm_fourcc.h>
+#include <drm_fourcc_imx.h>
 
 #include <string.h>
 #include <fcntl.h>

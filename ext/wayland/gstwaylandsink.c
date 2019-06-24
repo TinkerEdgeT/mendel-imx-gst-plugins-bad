@@ -57,7 +57,8 @@
 #include <gst/allocators/gstionmemory.h>
 #endif
 
-#include <drm_fourcc.h>
+#include <drm_fourcc_imx.h>
+#include <libdrm/drm_mode_imx.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 
