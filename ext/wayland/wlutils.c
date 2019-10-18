@@ -38,7 +38,7 @@
 #define WESTON_INI "/etc/xdg/weston/weston.ini"
 
 gboolean
-gst_wl_init_surface_state(GstWlDisplay * display, GstWlWindow * window)
+gst_wl_init_buffer_scale(gint display_width, gint display_height, guint * scale)
 {
     gchar path[] = WESTON_INI;
     gchar line[512], *p, *section = NULL, *size = NULL;
@@ -124,14 +124,11 @@ gst_wl_init_surface_state(GstWlDisplay * display, GstWlWindow * window)
     }
 
     /* FIXME: only support buffer scale 2 and 1 */
-    if (display->width > 0 && display->height > 0) {
-        window->scale = display->width / desktop_width;
-        if (window->scale != 1 && window->scale != 2) {
-            ret = FALSE;
-            goto out;
+    if (display_width > 0 && display_height > 0) {
+        *scale = display_width / desktop_width;
+        if (*scale != 1 && *scale != 2) {
+            *scale = 1;
         }
-        window->fullscreen_width = desktop_width;
-        window->fullscreen_height = desktop_height - PANEL_HEIGH;
     } else {
         ret = FALSE;
         goto out;
