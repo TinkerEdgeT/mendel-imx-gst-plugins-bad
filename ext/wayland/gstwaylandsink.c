@@ -77,7 +77,8 @@ enum
   PROP_WINDOW_HEIGHT,
   PROP_DISPLAY,
   PROP_ALPHA,
-  PROP_ENABLE_TILE
+  PROP_ENABLE_TILE,
+  PROP_FULLSCREEN
 };
 
 GST_DEBUG_CATEGORY (gstwayland_debug);
@@ -229,7 +230,7 @@ gst_wayland_sink_class_init (GstWaylandSinkClass * klass)
       g_param_spec_string ("display", "Wayland Display name", "Wayland "
           "display name to connect to, if not supplied via the GstContext",
           NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-  
+
   g_object_class_install_property (gobject_class, PROP_ALPHA,
       g_param_spec_float ("alpha", "Wayland surface alpha", "Wayland "
           "surface alpha value, apply custom alpha value to wayland surface",
@@ -238,6 +239,12 @@ gst_wayland_sink_class_init (GstWaylandSinkClass * klass)
   g_object_class_install_property (gobject_class, PROP_ENABLE_TILE,
       g_param_spec_boolean ("enable-tile", "enable hantro tile",
       "When enabled, the sink propose VSI tile modifier to VPU", FALSE,
+      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (gobject_class, PROP_FULLSCREEN,
+      g_param_spec_boolean ("fullscreen", "Fullscreen",
+      "Configure internally created windows as fullscreen"
+      " (does not affect external windows)", TRUE,
       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT));
 }
 
@@ -253,6 +260,7 @@ gst_wayland_sink_init (GstWaylandSink * sink)
   sink->frame_showed = 0;
   sink->run_time = 0;
   sink->enable_tile = FALSE;
+  sink->fullscreen = TRUE;
 }
 
 static void
@@ -278,6 +286,9 @@ gst_wayland_sink_get_property (GObject * object,
       break;
     case PROP_ENABLE_TILE:
       g_value_set_boolean (value, sink->enable_tile);
+      break;
+    case PROP_FULLSCREEN:
+      g_value_set_boolean (value, sink->fullscreen);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -308,6 +319,9 @@ gst_wayland_sink_set_property (GObject * object,
       break;
     case PROP_ENABLE_TILE:
       sink->enable_tile = g_value_get_boolean (value);
+      break;
+    case PROP_FULLSCREEN:
+      sink->fullscreen = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -873,7 +887,7 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
     if (!sink->window) {
       /* if we were not provided a window, create one ourselves */
       sink->window = gst_wl_window_new_toplevel (sink->display,
-          &sink->video_info, &sink->render_lock);
+          &sink->video_info, &sink->render_lock, sink->fullscreen);
     }
     gst_wl_window_set_alpha (sink->window, sink->alpha);
   }

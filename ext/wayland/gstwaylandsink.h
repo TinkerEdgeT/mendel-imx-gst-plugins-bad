@@ -80,6 +80,7 @@ struct _GstWaylandSink
   GstClockTime run_time;
 
   gboolean enable_tile;
+  gboolean fullscreen;
 };
 
 struct _GstWaylandSinkClass
