@@ -82,7 +82,7 @@ struct _GstWlWindowClass
 GType gst_wl_window_get_type (void);
 
 GstWlWindow *gst_wl_window_new_toplevel (GstWlDisplay * display,
-        const GstVideoInfo * info, GMutex * render_lock);
+        const GstVideoInfo * info, GMutex * render_lock, gboolean fullscreen);
 GstWlWindow *gst_wl_window_new_in_surface (GstWlDisplay * display,
         struct wl_surface * parent, GMutex * render_lock);
 

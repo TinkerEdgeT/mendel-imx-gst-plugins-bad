@@ -171,7 +171,7 @@ gst_wl_window_new_internal (GstWlDisplay * display, GMutex * render_lock)
 
 GstWlWindow *
 gst_wl_window_new_toplevel (GstWlDisplay * display, const GstVideoInfo * info,
-    GMutex * render_lock)
+    GMutex * render_lock, gboolean fullscreen)
 {
   GstWlWindow *window;
   gint width;
@@ -197,6 +197,13 @@ gst_wl_window_new_toplevel (GstWlDisplay * display, const GstVideoInfo * info,
   width =
       gst_util_uint64_scale_int_round (info->width, info->par_n, info->par_d);
   gst_wl_window_set_render_rectangle (window, 0, 0, width / window->scale, info->height / window->scale);
+
+  if (fullscreen) {
+    /* this triggers handle_configure with the fullscreen dimensions */
+    wl_shell_surface_set_fullscreen (window->shell_surface,
+        WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,
+        0, NULL);
+  }
 
   return window;
 }
